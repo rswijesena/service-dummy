@@ -18,7 +18,7 @@ public class DescribeController {
     @POST
     public DescribeServiceResponse describe(ServiceRequest serviceRequest) {
         return new DescribeServiceBuilder()
-                .setProvidesLogic(true)
+                .setProvidesDatabase(true)
                 .setCulture(new Culture("EN", "US"))
                 .createDescribeService()
                 .createResponse();
