@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 @ApplicationPath("/")
 public class Application extends BaseApplication {
-    private static final URI BASE_URI = URI.create("http://0.0.0.0:8080/");
+    private static final URI BASE_URI = URI.create("http://0.0.0.0:8080/api/dummy/1");
 
     public Application() {
         registerSdk().packages("com.manywho.services.dummy");
