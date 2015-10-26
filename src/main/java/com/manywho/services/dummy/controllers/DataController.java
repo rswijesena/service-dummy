@@ -4,7 +4,6 @@ import com.manywho.sdk.entities.run.ApiProblemException;
 import com.manywho.sdk.entities.run.ServiceProblemException;
 import com.manywho.sdk.entities.run.elements.type.ObjectDataRequest;
 import com.manywho.sdk.entities.run.elements.type.ObjectDataResponse;
-import com.manywho.sdk.enums.InvokeType;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;

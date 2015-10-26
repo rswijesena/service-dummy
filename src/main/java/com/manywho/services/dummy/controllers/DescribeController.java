@@ -16,9 +16,10 @@ import javax.ws.rs.Produces;
 public class DescribeController {
     @Path("/metadata")
     @POST
-    public DescribeServiceResponse describe(ServiceRequest serviceRequest) {
+    public DescribeServiceResponse describe(ServiceRequest serviceRequest) throws Exception {
         return new DescribeServiceBuilder()
                 .setProvidesDatabase(true)
+                .setProvidesLogic(true)
                 .setCulture(new Culture("EN", "US"))
                 .createDescribeService()
                 .createResponse();
