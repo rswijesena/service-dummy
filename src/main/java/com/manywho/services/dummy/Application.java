@@ -12,14 +12,16 @@ import java.util.logging.Logger;
 
 @ApplicationPath("/")
 public class Application extends BaseApplication {
-    private static final URI BASE_URI = URI.create("http://0.0.0.0:8080/api/dummy/1");
-
     public Application() {
         registerSdk().packages("com.manywho.services.dummy");
     }
 
     public static void main(String[] args) {
         try {
+            final String port = System.getProperty("server.port") != null ? System.getProperty("server.port") : "8080";
+
+            final URI BASE_URI = URI.create(String.format("http://0.0.0.0:%s/api/dummy/1", port));
+
             final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, new Application(), false);
 
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdownNow));
