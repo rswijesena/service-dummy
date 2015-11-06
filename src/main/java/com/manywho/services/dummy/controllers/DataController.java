@@ -4,7 +4,6 @@ import com.manywho.sdk.entities.run.ApiProblemException;
 import com.manywho.sdk.entities.run.ServiceProblemException;
 import com.manywho.sdk.entities.run.elements.type.ObjectDataRequest;
 import com.manywho.sdk.entities.run.elements.type.ObjectDataResponse;
-import com.manywho.sdk.enums.InvokeType;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -25,7 +24,6 @@ public class DataController {
                 "https://services.manywho.com/api/dummy/1/data",
                 401,
                 "You is unauthorised, <strong>boy.</strong>",
-                headers.getRequestHeaders(),
                 "Unauthorised"
         );
     }
@@ -37,9 +35,7 @@ public class DataController {
                 "https://services.manywho.com/api/dummy/1/data",
                 400,
                 "Something bad happened",
-                headers.getRequestHeaders(),
                 "I just said, something bad happened",
-                InvokeType.Forward,
                 "group/action"
         );
     }
