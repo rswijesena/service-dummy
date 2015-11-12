@@ -1,4 +1,4 @@
-FROM java:8
+FROM jeanblanchard/java:8
 
 EXPOSE 8080
 
