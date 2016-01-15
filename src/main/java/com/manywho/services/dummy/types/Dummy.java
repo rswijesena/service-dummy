@@ -15,8 +15,9 @@ public class Dummy extends AbstractType {
     @Override
     public TypeElementBindingCollection getBindings() {
         return new TypeElementBindingCollection() {{
-            add(new TypeElementBinding("Dummy", "Dummy bindings", "dummy", new TypeElementPropertyBindingCollection() {{
+            add(new TypeElementBinding("Dummy", "Dummy bindings", NAME, new TypeElementPropertyBindingCollection() {{
                 add(new TypeElementPropertyBinding("Name", "Name"));
+                add(new TypeElementPropertyBinding("Age", "Age"));
             }}));
         }};
     }
@@ -25,6 +26,7 @@ public class Dummy extends AbstractType {
     public TypeElementPropertyCollection getProperties() {
         return new TypeElementPropertyCollection() {{
             add(new TypeElementProperty("Name", ContentType.String));
+            add(new TypeElementProperty("Age", ContentType.Number));
         }};
     }
 }
