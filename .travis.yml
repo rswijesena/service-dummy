@@ -6,19 +6,19 @@ jdk:
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "develop" ]; then
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker build -t manywho/service-dummy:develop .;
     docker push manywho/service-dummy:develop;
     fi
 
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker build -t manywho/service-dummy:latest .;
     docker push manywho/service-dummy:latest;
     fi
 
   - if [[ -z "$TRAVIS_TAG" ]]; then
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker build -t manywho/service-dummy:$TRAVIS_TAG .;
     docker push manywho/service-dummy:$TRAVIS_TAG;
     fi
