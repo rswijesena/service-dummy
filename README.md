@@ -2,6 +2,8 @@ ManyWho Dummy Service
 ======================
 
 [![Build Status](https://travis-ci.org/manywho/service-dummy.svg?branch=develop)](https://travis-ci.org/manywho/service-dummy)
+[![Docker Automated build](https://img.shields.io/docker/automated/manywho/service-dummy.svg?maxAge=2592000)](https://hub.docker.com/r/manywho/service-dummy)
+[![Docker Pulls](https://img.shields.io/docker/pulls/manywho/service-dummy.svg?maxAge=2592000)](https://hub.docker.com/r/manywho/service-dummy)
 
 This miniature service is used to for stubbing integrations in Flows, and doesn't really do anything of value.
 
