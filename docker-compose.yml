@@ -1,4 +1,0 @@
-service:
-  image: docker.manywho.net/manywho/service-dummy:$IMAGE_TAG
-  labels:
-    io.rancher.scheduler.global: 'true'
