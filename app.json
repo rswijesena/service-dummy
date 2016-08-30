@@ -1,0 +1,7 @@
+{
+  "name": "ManyWho Dummy Service",
+  "description": "A plugin that enables stubbing of integrations into ManyWho Flows",
+  "repository": "https://github.com/manywho/service-dummy",
+  "logo": "https://s3.amazonaws.com/manywho-service-assets/icons/service-dummy.png",
+  "keywords": ["manywho", "dummy", "plugin", "workflow"]
+}
