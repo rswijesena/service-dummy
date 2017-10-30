@@ -55,7 +55,7 @@ public class DataController {
     }
 
     @Path("/data")
-    @DELETE
+    @POST
     public ObjectDataResponse delete(ObjectDataRequest objectDataRequest) throws Exception {
         switch (objectDataRequest.getObjectDataType().getDeveloperName()) {
             case Error.NAME:
