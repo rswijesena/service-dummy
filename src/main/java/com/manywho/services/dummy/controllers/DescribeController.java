@@ -20,6 +20,7 @@ public class DescribeController {
         return new DescribeServiceBuilder()
                 .setProvidesDatabase(true)
                 .setProvidesLogic(true)
+                .setProvidesIdentity(true)
                 .setCulture(new Culture("EN", "US"))
                 .createDescribeService()
                 .createResponse();
