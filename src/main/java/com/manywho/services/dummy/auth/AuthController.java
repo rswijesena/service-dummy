@@ -70,11 +70,20 @@ public class AuthController extends AbstractController {
     @Path("/authorization/group")
     @POST
     public ObjectDataResponse groups(ObjectDataRequest objectDataRequest) throws Exception {
-        ObjectCollection groupCollection = new ObjectCollection();
-        groupCollection.add(loadGroup("1"));
-        groupCollection.add(loadGroup("2"));
+        if (objectDataRequest.getListFilter() == null) {
 
-        return new ObjectDataResponse(groupCollection);
+            return loadGroupCollection(1, 10, true);
+        } else if (objectDataRequest.getListFilter().getSearch() != null &&
+                "group1".equals(objectDataRequest.getListFilter().getSearch().toLowerCase())) {
+
+            return loadGroupCollection(1, 1, false);
+        } else if (objectDataRequest.getListFilter().getOffset() == 0) {
+
+            return loadGroupCollection(1, 10, true);
+        } else {
+
+            return loadGroupCollection(11, 12, false);
+        }
     }
 
     @Path("/authorization/group/attribute")
@@ -86,11 +95,22 @@ public class AuthController extends AbstractController {
     @Path("/authorization/user")
     @POST
     public ObjectDataResponse users(ObjectDataRequest objectDataRequest) throws Exception {
-        ObjectCollection userCollection = new ObjectCollection();
-        userCollection.add(loadUser("1"));
-        userCollection.add(loadUser("2"));
 
-        return new ObjectDataResponse(userCollection);
+        if (objectDataRequest.getListFilter() == null) {
+
+            return loadUserCollection(1, 10, true);
+        } else if (objectDataRequest.getListFilter().getSearch() != null &&
+                "user1".equals(objectDataRequest.getListFilter().getSearch().toLowerCase())) {
+
+            return loadUserCollection(1, 1, false);
+        } else if (objectDataRequest.getListFilter().getOffset() == 0) {
+
+            return loadUserCollection(1, 10, true);
+        } else {
+
+            return loadUserCollection(11, 12, false);
+        }
+
     }
 
     @Path("/authorization/user/attribute")
@@ -110,6 +130,19 @@ public class AuthController extends AbstractController {
         object.setProperties(properties);
 
         return object;
+    }
+
+    private ObjectDataResponse loadGroupCollection(Integer idIni, Integer IdEnd, boolean hasMore) {
+        ObjectCollection groupCollection = new ObjectCollection();
+
+        for (Integer i = idIni; i<(IdEnd+1); i++) {
+            groupCollection.add(loadGroup(i.toString()));
+        }
+
+        ObjectDataResponse objectDataResponse =  new ObjectDataResponse(groupCollection);
+        objectDataResponse.setHasMoreResults(hasMore);
+
+        return objectDataResponse;
     }
 
     private Object loadGroup(String groupId) {
@@ -138,6 +171,19 @@ public class AuthController extends AbstractController {
         object.setProperties(properties);
 
         return object;
+    }
+
+    private ObjectDataResponse loadUserCollection(Integer idIni, Integer IdEnd, boolean hasMore) {
+        ObjectCollection userCollection = new ObjectCollection();
+
+        for (Integer i = idIni; i<(IdEnd+1); i++) {
+            userCollection.add(loadUser(i.toString()));
+        }
+
+        ObjectDataResponse objectDataResponse =  new ObjectDataResponse(userCollection);
+        objectDataResponse.setHasMoreResults(hasMore);
+
+        return objectDataResponse;
     }
 
     private Object loadUser(String userId) {
