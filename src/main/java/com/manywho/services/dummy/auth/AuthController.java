@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.Optional;
 
 @Path("/")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -95,6 +96,27 @@ public class AuthController extends AbstractController {
     @Path("/authorization/user")
     @POST
     public ObjectDataResponse users(ObjectDataRequest objectDataRequest) throws Exception {
+
+        
+        if (objectDataRequest.getObjectData() != null) {
+            //swimlane asking for data about a user
+            for (MObject userRequest : objectDataRequest.getObjectData()) {
+                if (userRequest.getDeveloperName().equals("GroupAuthorizationUser")) {
+                    Optional<Property> authenticationId = userRequest
+                            .getProperties().stream()
+                            .filter(p -> p.getDeveloperName().equals("AuthenticationId"))
+                            .findFirst();
+
+                    if (authenticationId.isPresent()) {
+                        if (authenticationId.get().getContentValue().equals("user1")) {
+                            Integer userID = Integer.parseInt(authenticationId.get().getContentValue().replace("user", ""));
+                            return loadUserCollection(userID, userID, false);
+                        }
+                    }
+
+                }
+            }
+        }
 
         if (objectDataRequest.getListFilter() == null) {
 
