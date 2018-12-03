@@ -18,12 +18,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Path("/")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class AuthController extends AbstractController {
+    private final static Integer USERS_IN_DIRECTORY = 61;
+    private final static Integer GROUPS_IN_DIRECTORY = 53;
 
     @Context
     private UriInfo uriInfo;
@@ -71,20 +73,33 @@ public class AuthController extends AbstractController {
     @Path("/authorization/group")
     @POST
     public ObjectDataResponse groups(ObjectDataRequest objectDataRequest) throws Exception {
-        if (objectDataRequest.getListFilter() == null) {
+        ObjectCollection allGroups = loadGroups(USERS_IN_DIRECTORY);
+        ObjectCollection groupsToReturn = new ObjectCollection();
 
-            return loadGroupCollection(1, 10, true);
-        } else if (objectDataRequest.getListFilter().getSearch() != null &&
-                "group1".equals(objectDataRequest.getListFilter().getSearch().toLowerCase())) {
+        boolean hasMoreValues = true;
 
-            return loadGroupCollection(1, 1, false);
-        } else if (objectDataRequest.getListFilter().getOffset() == 0) {
+        if (objectDataRequest.getObjectData() != null) {
+            for (MObject requestedGroups : objectDataRequest.getObjectData()) {
+                if (requestedGroups.getDeveloperName().equals("GroupAuthorizationGroup")) {
 
-            return loadGroupCollection(1, 10, true);
+                    String idToSearch = requestedGroups.getProperties().stream()
+                            .filter(property -> property.getDeveloperName().equals("AuthenticationId"))
+                            .findFirst()
+                            .orElse(new Property("AuthenticationId", ""))
+                            .getContentValue();
+
+                    allGroups.stream()
+                            .filter(u -> u.getExternalId().equals(idToSearch))
+                            .findFirst()
+                            .map(groupsToReturn::add);
+                }
+            }
         } else {
 
-            return loadGroupCollection(11, 12, false);
+            hasMoreValues = searchObjectsByExternalIds(objectDataRequest, allGroups, groupsToReturn, hasMoreValues, GROUPS_IN_DIRECTORY);
         }
+
+        return createResponse(groupsToReturn, hasMoreValues);
     }
 
     @Path("/authorization/group/attribute")
@@ -96,43 +111,32 @@ public class AuthController extends AbstractController {
     @Path("/authorization/user")
     @POST
     public ObjectDataResponse users(ObjectDataRequest objectDataRequest) throws Exception {
+        ObjectCollection allUsers = loadUsers(USERS_IN_DIRECTORY);
+        ObjectCollection usersToReturn = new ObjectCollection();
 
-        
+        boolean hasMoreValues = true;
+
         if (objectDataRequest.getObjectData() != null) {
-            //swimlane asking for data about a user
-            for (MObject userRequest : objectDataRequest.getObjectData()) {
-                if (userRequest.getDeveloperName().equals("GroupAuthorizationUser")) {
-                    Optional<Property> authenticationId = userRequest
-                            .getProperties().stream()
-                            .filter(p -> p.getDeveloperName().equals("AuthenticationId"))
-                            .findFirst();
+            for (MObject requestedUsers : objectDataRequest.getObjectData()) {
+                if (requestedUsers.getDeveloperName().equals("GroupAuthorizationUser")) {
 
-                    if (authenticationId.isPresent()) {
-                        if (authenticationId.get().getContentValue().equals("user1")) {
-                            Integer userID = Integer.parseInt(authenticationId.get().getContentValue().replace("user", ""));
-                            return loadUserCollection(userID, userID, false);
-                        }
-                    }
+                    String idToSearch = requestedUsers.getProperties().stream()
+                            .filter(property -> property.getDeveloperName().equals("AuthenticationId"))
+                            .findFirst()
+                            .orElse(new Property("AuthenticationId", ""))
+                            .getContentValue();
 
+                    allUsers.stream()
+                            .filter(u -> u.getExternalId().equals(idToSearch))
+                            .findFirst()
+                            .map(usersToReturn::add);
                 }
             }
-        }
-
-        if (objectDataRequest.getListFilter() == null) {
-
-            return loadUserCollection(1, 10, true);
-        } else if (objectDataRequest.getListFilter().getSearch() != null &&
-                "user1".equals(objectDataRequest.getListFilter().getSearch().toLowerCase())) {
-
-            return loadUserCollection(1, 1, false);
-        } else if (objectDataRequest.getListFilter().getOffset() == 0) {
-
-            return loadUserCollection(1, 10, true);
         } else {
-
-            return loadUserCollection(11, 12, false);
+            hasMoreValues = searchObjectsByExternalIds(objectDataRequest, allUsers, usersToReturn, hasMoreValues, USERS_IN_DIRECTORY);
         }
 
+        return createResponse(usersToReturn, hasMoreValues);
     }
 
     @Path("/authorization/user/attribute")
@@ -154,29 +158,44 @@ public class AuthController extends AbstractController {
         return object;
     }
 
-    private ObjectDataResponse loadGroupCollection(Integer idIni, Integer IdEnd, boolean hasMore) {
-        ObjectCollection groupCollection = new ObjectCollection();
+    private boolean searchObjectsByExternalIds(ObjectDataRequest objectDataRequest, ObjectCollection allGroups, ObjectCollection groupsToReturn, boolean hasMoreValues, Integer groupsInDirectory) {
+        ObjectCollection objectCollection = allGroups;
 
-        for (Integer i = idIni; i<(IdEnd+1); i++) {
-            groupCollection.add(loadGroup(i.toString()));
+        if (Strings.isNullOrEmpty(objectDataRequest.getListFilter().getSearch()) == false) {
+            objectCollection = allGroups.stream()
+                    .filter(u -> u.getExternalId().startsWith(objectDataRequest.getListFilter().getSearch()))
+                    .collect(Collectors.toCollection(ObjectCollection::new));
         }
 
-        ObjectDataResponse objectDataResponse =  new ObjectDataResponse(groupCollection);
-        objectDataResponse.setHasMoreResults(hasMore);
+        int fromValue = 1;
+        Integer toValue = groupsInDirectory;
 
-        return objectDataResponse;
+        if (objectDataRequest.getListFilter() != null) {
+            fromValue = objectDataRequest.getListFilter().getOffset();
+            toValue = objectDataRequest.getListFilter().getOffset() + objectDataRequest.getListFilter().getLimit();
+        }
+
+        if (toValue >= objectCollection.size()) {
+            hasMoreValues = false;
+            toValue = objectCollection.size();
+        }
+
+        for (Integer counter = fromValue; counter < toValue; counter++) {
+            groupsToReturn.add(allGroups.get(counter));
+        }
+        return hasMoreValues;
     }
 
     private Object loadGroup(String groupId) {
         PropertyCollection properties = new PropertyCollection();
 
-        properties.add(new Property("AuthenticationId", "group" + groupId));
+        properties.add(new Property("AuthenticationId", "group " + groupId));
         properties.add(new Property("FriendlyName", "Group " + groupId));
         properties.add(new Property("DeveloperSummary", "Group " + groupId));
 
         Object object = new Object();
         object.setDeveloperName("GroupAuthorizationGroup");
-        object.setExternalId("group" + groupId);
+        object.setExternalId("group " + groupId);
         object.setProperties(properties);
 
         return object;
@@ -195,32 +214,48 @@ public class AuthController extends AbstractController {
         return object;
     }
 
-    private ObjectDataResponse loadUserCollection(Integer idIni, Integer IdEnd, boolean hasMore) {
+
+    private ObjectCollection loadGroups(Integer howManyGroups) {
         ObjectCollection userCollection = new ObjectCollection();
 
-        for (Integer i = idIni; i<(IdEnd+1); i++) {
+        for (Integer i = 1; i <= howManyGroups; i++) {
+            userCollection.add(loadGroup(i.toString()));
+        }
+
+        return userCollection;
+    }
+
+
+    private ObjectCollection loadUsers(Integer howManyUsers) {
+        ObjectCollection userCollection = new ObjectCollection();
+
+        for (Integer i = 1; i <= howManyUsers; i++) {
             userCollection.add(loadUser(i.toString()));
         }
 
-        ObjectDataResponse objectDataResponse =  new ObjectDataResponse(userCollection);
-        objectDataResponse.setHasMoreResults(hasMore);
-
-        return objectDataResponse;
+        return userCollection;
     }
 
     private Object loadUser(String userId) {
         PropertyCollection properties = new PropertyCollection();
 
-        properties.add(new Property("AuthenticationId", "user" + userId));
+        properties.add(new Property("AuthenticationId", "user " + userId));
         properties.add(new Property("FriendlyName",  "User " + userId));
         properties.add(new Property("DeveloperSummary",  "User "+ userId));
 
         Object object = new Object();
         object.setDeveloperName("GroupAuthorizationUser");
-        object.setExternalId("user"+ userId);
+        object.setExternalId("user "+ userId);
         object.setProperties(properties);
 
         return object;
+    }
+
+    private ObjectDataResponse createResponse(ObjectCollection objectCollection, boolean hasMore) {
+        ObjectDataResponse objectDataResponse =  new ObjectDataResponse(objectCollection);
+        objectDataResponse.setHasMoreResults(hasMore);
+
+        return objectDataResponse;
     }
 
     private URI baseUri(String headerProtocol) {
