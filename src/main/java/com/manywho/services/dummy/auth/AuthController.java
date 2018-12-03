@@ -158,17 +158,17 @@ public class AuthController extends AbstractController {
         return object;
     }
 
-    private boolean searchObjectsByExternalIds(ObjectDataRequest objectDataRequest, ObjectCollection allGroups, ObjectCollection groupsToReturn, boolean hasMoreValues, Integer groupsInDirectory) {
-        ObjectCollection objectCollection = allGroups;
+    private boolean searchObjectsByExternalIds(ObjectDataRequest objectDataRequest, ObjectCollection allObjects, ObjectCollection objectsToReturn, boolean hasMoreValues, Integer objectsInDirectory) {
+        ObjectCollection objectCollection = allObjects;
 
         if (Strings.isNullOrEmpty(objectDataRequest.getListFilter().getSearch()) == false) {
-            objectCollection = allGroups.stream()
-                    .filter(u -> u.getExternalId().startsWith(objectDataRequest.getListFilter().getSearch()))
+            objectCollection = allObjects.stream()
+                    .filter(o -> o.getExternalId().startsWith(objectDataRequest.getListFilter().getSearch()))
                     .collect(Collectors.toCollection(ObjectCollection::new));
         }
 
         int fromValue = 1;
-        Integer toValue = groupsInDirectory;
+        Integer toValue = objectsInDirectory;
 
         if (objectDataRequest.getListFilter() != null) {
             fromValue = objectDataRequest.getListFilter().getOffset();
@@ -181,7 +181,7 @@ public class AuthController extends AbstractController {
         }
 
         for (Integer counter = fromValue; counter < toValue; counter++) {
-            groupsToReturn.add(allGroups.get(counter));
+            objectsToReturn.add(allObjects.get(counter));
         }
         return hasMoreValues;
     }
