@@ -242,13 +242,13 @@ public class AuthController extends AbstractController {
     private Object loadGroup(String groupId) {
         PropertyCollection properties = new PropertyCollection();
 
-        properties.add(new Property("AuthenticationId", "group " + groupId));
+        properties.add(new Property("AuthenticationId", "group" + groupId));
         properties.add(new Property("FriendlyName", "Group " + groupId));
         properties.add(new Property("DeveloperSummary", "Group " + groupId));
 
         Object object = new Object();
         object.setDeveloperName("GroupAuthorizationGroup");
-        object.setExternalId("group " + groupId);
+        object.setExternalId("group" + groupId);
         object.setProperties(properties);
 
         return object;
@@ -292,13 +292,13 @@ public class AuthController extends AbstractController {
     private Object loadUser(String userId) {
         PropertyCollection properties = new PropertyCollection();
 
-        properties.add(new Property("AuthenticationId", "user " + userId));
+        properties.add(new Property("AuthenticationId", "user" + userId));
         properties.add(new Property("FriendlyName",  "User " + userId));
         properties.add(new Property("DeveloperSummary",  "User "+ userId));
 
         Object object = new Object();
         object.setDeveloperName("GroupAuthorizationUser");
-        object.setExternalId("user "+ userId);
+        object.setExternalId("user"+ userId);
         object.setProperties(properties);
 
         return object;
