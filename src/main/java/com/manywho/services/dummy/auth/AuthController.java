@@ -2,6 +2,9 @@ package com.manywho.services.dummy.auth;
 
 import com.google.common.base.Strings;
 import com.manywho.sdk.entities.UserObject;
+import com.manywho.sdk.entities.run.elements.config.Authorization;
+import com.manywho.sdk.entities.run.elements.config.Group;
+import com.manywho.sdk.entities.run.elements.config.User;
 import com.manywho.sdk.entities.run.elements.type.*;
 import com.manywho.sdk.entities.run.elements.type.Object;
 import com.manywho.sdk.entities.security.AuthenticatedWho;
@@ -11,6 +14,7 @@ import com.manywho.sdk.enums.AuthenticationStatus;
 import com.manywho.sdk.enums.AuthorizationType;
 import com.manywho.sdk.services.annotations.AuthorizationRequired;
 import com.manywho.sdk.services.controllers.AbstractController;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -18,6 +22,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Path("/")
@@ -59,7 +66,9 @@ public class AuthController extends AbstractController {
         UserObject userObject;
         URI host = baseUri(xForwardedProto);
 
-        if (authenticatedWho.getToken().equals("NONE")) {
+        String status = getUserAuthorizationStatus(objectDataRequest.getAuthorization(), authenticatedWho);
+
+        if (status.equals("401")) {
             userObject = new UserObject("UNKNOWN", AuthorizationType.Oauth2,
                     host + "callback/fake-idp?", "401");
         } else {
@@ -68,6 +77,50 @@ public class AuthController extends AbstractController {
         }
 
         return new ObjectDataResponse(userObject);
+    }
+
+
+    public String getUserAuthorizationStatus(Authorization authorization, AuthenticatedWho user) {
+        switch (authorization.getGlobalAuthenticationType()) {
+            case Public:
+                return "200";
+            case AllUsers:
+                if (!user.getUserId().equalsIgnoreCase("PUBLIC_USER")) {
+                    return "200";
+                } else {
+                    return "401";
+                }
+            case Specified:
+                if (!user.getUserId().equalsIgnoreCase("PUBLIC_USER")) {
+                    String userId = user.getUserId();
+
+                    if (CollectionUtils.isNotEmpty(authorization.getUsers())) {
+                        for (User allowedUser:authorization.getUsers()) {
+                            if (allowedUser.getAttribute().equalsIgnoreCase("accountId")
+                                    && Objects.equals(allowedUser.getAuthenticationId(), userId)) {
+
+                                return "200";
+                            }
+                        }
+                    }
+
+                    if (CollectionUtils.isNotEmpty(authorization.getGroups())) {
+                        List<Object> groups = new ArrayList<>();
+                        if (user.getUserId().equals("user1")) {
+                            //user1 is member of group1
+                            groups.add(loadGroup("1"));
+                        }
+
+                        for (Group group : authorization.getGroups()) {
+                            if (groups.stream().anyMatch(m -> m.getExternalId().equals(group.getAuthenticationId()))) {
+                                return "200";
+                            }
+                        }
+                    }
+                }
+            default:
+                return "401";
+        }
     }
 
     @Path("/authorization/group")
@@ -216,13 +269,13 @@ public class AuthController extends AbstractController {
 
 
     private ObjectCollection loadGroups(Integer howManyGroups) {
-        ObjectCollection userCollection = new ObjectCollection();
+        ObjectCollection groupCollection = new ObjectCollection();
 
         for (Integer i = 1; i <= howManyGroups; i++) {
-            userCollection.add(loadGroup(i.toString()));
+            groupCollection.add(loadGroup(i.toString()));
         }
 
-        return userCollection;
+        return groupCollection;
     }
 
 

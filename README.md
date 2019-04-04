@@ -7,6 +7,8 @@ ManyWho Dummy Service
 
 This miniature service is used to for stubbing integrations in Flows, and doesn't really do anything of value.
 
+The service always login the user as user1 when using the identity functionality, the user1 is member of group1.
+
 ## Running
 
 The service is compatible with Heroku, and can be deployed by clicking the button below:
