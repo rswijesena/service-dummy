@@ -3,15 +3,12 @@ package com.manywho.services.dummy.social;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.manywho.sdk.entities.run.elements.config.SocialServiceRequest;
-import com.manywho.sdk.entities.social.MentionedWho;
-import com.manywho.sdk.entities.social.Message;
-import com.manywho.sdk.entities.social.MessageList;
-import com.manywho.sdk.entities.social.Who;
-import com.manywho.sdk.services.annotations.AuthorizationRequired;
-import com.manywho.sdk.validation.social.*;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import com.manywho.sdk.api.run.elements.config.SocialServiceRequest;
+import com.manywho.sdk.api.social.MentionedWho;
+import com.manywho.sdk.api.social.Message;
+import com.manywho.sdk.api.social.MessageList;
+import com.manywho.sdk.api.social.Who;
+import com.manywho.sdk.services.validation.social.*;
 import org.joda.time.DateTime;
 
 import javax.ws.rs.*;
@@ -34,49 +31,44 @@ public class SocialController {
 
     @Path("/stream/{id}")
     @POST
-    @AuthorizationRequired
     public MessageList getStreamMessages(@GetStreamMessages SocialServiceRequest serviceRequest, @PathParam("id") UUID streamId) {
         return new MessageList();
     }
 
     @Path("/stream/{id}/follower")
     @POST
-    @AuthorizationRequired
     public List<Who> getStreamFollowers(@GetStreamFollowers SocialServiceRequest serviceRequest, @PathParam("id") UUID streamId) {
         return new ArrayList<>();
     }
 
-    @Path("/stream/{id}/message")
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @AuthorizationRequired
-    public Message postNewMessage(@PostNewMessage @FormDataParam("serviceRequest") SocialServiceRequest serviceRequest,
-                                           @FormDataParam("file") InputStream file,
-                                           @FormDataParam("file") FormDataContentDisposition fileDetails,
-                                           @PathParam("id") UUID streamId) {
-        Message message = new Message();
-        message.setCreatedDate(DateTime.now());
-        message.setId(UUID.randomUUID().toString());
-        message.setRepliedToId(serviceRequest.getNewMessage().getRepliedTo());
-        message.setSender(createWho());
-        message.setText(serviceRequest.getNewMessage().getMessageText());
-
-        return message;
-    }
+//    @Path("/stream/{id}/message")
+//    @POST
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    public Message postNewMessage(@PostNewMessage @FormDataParam("serviceRequest") SocialServiceRequest serviceRequest,
+//                                  @FormDataParam("file") InputStream file,
+//                                  @FormDataParam("file") FormDataContentDisposition fileDetails,
+//                                  @PathParam("id") UUID streamId) {
+//        Message message = new Message();
+//        message.setCreatedDate(DateTime.now());
+//        message.setId(UUID.randomUUID().toString());
+//        message.setRepliedToId(serviceRequest.getNewMessage().getRepliedTo());
+//        message.setSender(createWho());
+//        message.setText(serviceRequest.getNewMessage().getMessageText());
+//
+//        return message;
+//    }
 
     @Path("/stream/{id}/user/me")
     @POST
-    @AuthorizationRequired
     public Who getCurrentUser(@GetCurrentUser SocialServiceRequest serviceRequest, @PathParam("id") UUID streamId) {
         return createWho();
     }
 
     @Path("/stream/{id}/user/name/{name}")
     @POST
-    @AuthorizationRequired
     public List<MentionedWho> searchUsersByName(@SearchUsersByName SocialServiceRequest serviceRequest,
-                                                         @PathParam("id") UUID streamId,
-                                                         @PathParam("name") String name) {
+                                                @PathParam("id") UUID streamId,
+                                                @PathParam("name") String name) {
         if (Strings.isNullOrEmpty(name)) {
             return new ArrayList<>();
         }

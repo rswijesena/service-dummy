@@ -1,4 +1,4 @@
-package com.manywho.services.dummy.auth;
+package com.manywho.services.dummy.identity;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -10,7 +10,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 @Path("/callback")
-public class FakeIdProvider {
+public class FakeIdProviderController {
     @Path("/fake-idp")
     @GET
     public Response fakeIdProvider(
