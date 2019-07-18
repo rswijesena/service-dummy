@@ -17,6 +17,7 @@ import com.manywho.sdk.api.run.elements.type.ObjectDataRequest;
 import com.manywho.sdk.api.security.AuthenticatedWho;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/invalidresponse")
@@ -37,16 +38,20 @@ public class InvalidResponseController {
     public Response invalid(ObjectDataRequest objectDataRequest) throws UnsupportedEncodingException {
 
         AuthenticatedWho authenticatedWho = authenticatedWhoProvider.get();
+        
         ServiceResponse response = new ServiceResponse();
         response.setToken(objectDataRequest.getToken());
         response.setTenantId(authenticatedWho.getManyWhoTenantId());
         response.setInvokeType(InvokeType.Forward);
         
-        EngineValue value1 = new EngineValue();
-        value1.setContentType(ContentType.DateTime);
-        value1.setContentValue("NotAValidDate"); 
-        value1.setDeveloperName("Body");
-        response.setOutputs(List.of(value1));
+        EngineValue invalidDateValue = new EngineValue();
+        invalidDateValue.setContentType(ContentType.DateTime);
+        invalidDateValue.setContentValue("NotAValidDate"); 
+        invalidDateValue.setDeveloperName("Body");
+        
+        List<EngineValue> values = new ArrayList<EngineValue>();
+        values.add(invalidDateValue);
+        response.setOutputs(values);
         
         return Response.ok(response).build();
     }
