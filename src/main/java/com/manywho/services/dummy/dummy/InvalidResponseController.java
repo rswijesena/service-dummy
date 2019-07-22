@@ -46,7 +46,7 @@ public class InvalidResponseController {
         
         EngineValue invalidDateValue = new EngineValue();
         invalidDateValue.setContentType(ContentType.DateTime);
-        invalidDateValue.setContentValue("NotAValidDate"); 
+        invalidDateValue.setContentValue("2019-07-22T11:42:15.9084748+01:00"); 
         invalidDateValue.setDeveloperName("Body");
         
         List<EngineValue> values = new ArrayList<EngineValue>();
