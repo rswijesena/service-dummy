@@ -32,8 +32,8 @@ public class DummyAction implements Action {
             this.body = body;
             this.items = new ArrayList<>();
 
-            this.items.add("FirstItem");
-            this.items.add("SecondItem");
+            this.items.add(new Dummy("1","John",25));
+            this.items.add(new Dummy("2","David",38));
         }
 
         public String getBody() {
@@ -41,9 +41,9 @@ public class DummyAction implements Action {
         }
 
         @Action.Output(name = "Items", contentType = ContentType.List)
-        private List<String> items;
+        private List<Dummy> items;
 
-        public List<String> getItems() {
+        public List<Dummy> getItems() {
             return items;
         }
     }
