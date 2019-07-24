@@ -70,7 +70,7 @@ public class InvalidResponseController {
         
         EngineValue invalidList = new EngineValue();
         invalidList.setContentType(ContentType.List);
-        invalidList.setDeveloperName("InvalidList");
+        invalidList.setDeveloperName("Body");
         
         List<MObject> listObjectData = new ArrayList<MObject>();
         
