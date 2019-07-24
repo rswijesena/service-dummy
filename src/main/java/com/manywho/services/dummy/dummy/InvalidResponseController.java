@@ -56,42 +56,4 @@ public class InvalidResponseController {
         
         return Response.ok(response).build();
     }
-
-    @Path("/invalidlist")
-    @POST
-    public Response invalidList(ObjectDataRequest objectDataRequest) throws UnsupportedEncodingException {
-
-        AuthenticatedWho authenticatedWho = authenticatedWhoProvider.get();
-        
-        ServiceResponse response = new ServiceResponse();
-        response.setToken(objectDataRequest.getToken());
-        response.setTenantId(authenticatedWho.getManyWhoTenantId());
-        response.setInvokeType(InvokeType.Forward);
-        
-        EngineValue invalidList = new EngineValue();
-        invalidList.setContentType(ContentType.List);
-        invalidList.setDeveloperName("Body");
-        
-        List<MObject> listObjectData = new ArrayList<MObject>();
-        
-        MObject firstItem = new MObject();
-        firstItem.setDeveloperName("Dummy");
-        firstItem.setOrder(1);
-        firstItem.setSelected(true);
-        listObjectData.add(firstItem);
-        
-        MObject secondItem = new MObject();
-        secondItem.setDeveloperName("Dummy");
-        secondItem.setOrder(1);
-        secondItem.setSelected(true);
-        listObjectData.add(secondItem);
-
-        invalidList.setObjectData(listObjectData);
-
-        List<EngineValue> values = new ArrayList<EngineValue>();
-        values.add(invalidList);
-        response.setOutputs(values);
-        
-        return Response.ok(response).build();
-    }
 }
