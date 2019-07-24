@@ -75,11 +75,13 @@ public class InvalidResponseController {
         List<MObject> listObjectData = new ArrayList<MObject>();
         
         MObject firstItem = new MObject();
+        firstItem.setDeveloperName("item1");
         firstItem.setOrder(1);
         firstItem.setSelected(true);
         listObjectData.add(firstItem);
         
         MObject secondItem = new MObject();
+        secondItem.setDeveloperName("item2");
         secondItem.setOrder(1);
         secondItem.setSelected(true);
         listObjectData.add(secondItem);
