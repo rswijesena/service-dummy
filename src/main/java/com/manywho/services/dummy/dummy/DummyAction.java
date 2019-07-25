@@ -1,8 +1,5 @@
 package com.manywho.services.dummy.dummy;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.manywho.sdk.api.ContentType;
 import com.manywho.sdk.services.actions.Action;
 
@@ -30,21 +27,10 @@ public class DummyAction implements Action {
 
         public Output(String body) {
             this.body = body;
-            this.items = new ArrayList<>();
-
-            this.items.add(new Dummy("1","John",25));
-            this.items.add(new Dummy("2","David",38));
         }
 
         public String getBody() {
             return body;
-        }
-
-        @Action.Output(name = "Items", contentType = ContentType.List)
-        private List<Dummy> items;
-
-        public List<Dummy> getItems() {
-            return items;
         }
     }
 }

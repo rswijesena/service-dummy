@@ -13,7 +13,6 @@ import com.manywho.sdk.api.ContentType;
 import com.manywho.sdk.api.InvokeType;
 import com.manywho.sdk.api.run.EngineValue;
 import com.manywho.sdk.api.run.elements.config.ServiceResponse;
-import com.manywho.sdk.api.run.elements.type.MObject;
 import com.manywho.sdk.api.run.elements.type.ObjectDataRequest;
 import com.manywho.sdk.api.security.AuthenticatedWho;
 
