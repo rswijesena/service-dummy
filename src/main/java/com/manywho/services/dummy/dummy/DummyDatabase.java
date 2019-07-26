@@ -3,6 +3,7 @@ package com.manywho.services.dummy.dummy;
 import com.google.common.collect.Lists;
 import com.manywho.sdk.api.draw.content.Command;
 import com.manywho.sdk.api.run.elements.type.ListFilter;
+import com.manywho.sdk.api.run.elements.type.MObject;
 import com.manywho.sdk.api.run.elements.type.ObjectDataType;
 import com.manywho.sdk.services.database.ReadOnlyDatabase;
 import com.manywho.services.dummy.ApplicationConfiguration;
