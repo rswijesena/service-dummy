@@ -127,7 +127,7 @@ public class IdentityController extends AbstractIdentityController {
 
         boolean hasMoreValues = true;
 
-        if (objectDataRequest.getObjectData() != null) {
+        if (objectDataRequest.getObjectData() != null && objectDataRequest.getObjectData().size() > 0) {
             for (MObject requestedGroups : objectDataRequest.getObjectData()) {
                 if (requestedGroups.getDeveloperName().equals("GroupAuthorizationGroup")) {
 
@@ -169,7 +169,7 @@ public class IdentityController extends AbstractIdentityController {
 
         boolean hasMoreValues = true;
 
-        if (objectDataRequest.getObjectData() != null) {
+        if (objectDataRequest.getObjectData() != null && objectDataRequest.getObjectData().size() > 0) {
             for (MObject requestedUsers : objectDataRequest.getObjectData()) {
                 if (requestedUsers.getDeveloperName().equals("GroupAuthorizationUser")) {
 
