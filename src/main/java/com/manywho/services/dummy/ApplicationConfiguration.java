@@ -5,7 +5,7 @@ import com.manywho.sdk.services.configuration.Configuration;
 
 public class ApplicationConfiguration implements Configuration {
 
-    @Configuration.Setting(name = "Hostname", contentType = ContentType.String, required = true)
+    @Configuration.Setting(name = "Hostname", contentType = ContentType.String, required = false)
     private String hostname;
 
     @Configuration.Setting(name = "Port", contentType = ContentType.Number, required = false)
