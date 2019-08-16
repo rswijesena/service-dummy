@@ -8,7 +8,6 @@ import com.manywho.sdk.api.draw.elements.type.TypeElementProperty;
 import com.manywho.sdk.api.draw.elements.type.TypeElementPropertyBinding;
 import com.manywho.sdk.services.types.TypeProvider;
 import com.manywho.services.dummy.ApplicationConfiguration;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +29,7 @@ public class DummyTypeProvider  implements TypeProvider<ApplicationConfiguration
         if (describeServiceRequest.hasConfigurationValues() == false || applicationConfiguration.getIncludeTypesWithBindings() == false) {
             return new ArrayList<>();
         }
+
 
         List<TypeElementProperty> propertiesHeadlines = new ArrayList<>();
         propertiesHeadlines.add(new TypeElementProperty("Headlines", ContentType.String));

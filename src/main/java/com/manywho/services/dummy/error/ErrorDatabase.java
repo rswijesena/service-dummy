@@ -2,6 +2,7 @@ package com.manywho.services.dummy.error;
 
 import com.manywho.sdk.api.draw.content.Command;
 import com.manywho.sdk.api.run.elements.type.ListFilter;
+import com.manywho.sdk.api.run.elements.type.MObject;
 import com.manywho.sdk.api.run.elements.type.ObjectDataType;
 import com.manywho.sdk.services.database.Database;
 import com.manywho.services.dummy.ApplicationConfiguration;
@@ -15,7 +16,7 @@ public class ErrorDatabase implements Database<ApplicationConfiguration, Error> 
     }
 
     @Override
-    public List<Error> findAll(ApplicationConfiguration configuration, ObjectDataType objectDataType, Command command, ListFilter filter) {
+    public List<Error> findAll(ApplicationConfiguration configuration, ObjectDataType objectDataType, Command command, ListFilter filter, List<MObject> objectList) {
         throw new RuntimeException("Exception loading type Error");
     }
 
