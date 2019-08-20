@@ -22,21 +22,27 @@ public class DummyRawDatabase implements RawDatabase<ApplicationConfiguration> {
                                  Command command, ListFilter listFilter, List<MObject> objects) {
 
         List<MObject> mObjects = new ArrayList<>();
+        boolean filterByObjects = filteringByObjects(objects, listFilter);
 
         if (objectDataType.getDeveloperName().equals("hn-binding")) {
-            if (objects == null || objects.size()==0 || containsOneOfOurCurrentHeadlines(objects, "How (not) to sign a JSON object")) {
+            if (filterByObjects == false ) {
+                // it returns all the objects
+                mObjects.add(createHackerNewsHeadlines());
+            } else if (containsOneOfOurCurrentHeadlines(objects, "How (not) to sign a JSON object")) {
+                // it returns only the objects with above headline
                 mObjects.add(createHackerNewsHeadlines());
             }
 
             return mObjects;
         } else if (objectDataType.getDeveloperName().equals("bbc-binding")) {
-            if (objects == null || objects.size() == 0) {
-                // as an example we will use the passed objects to filter the results
+            if (filterByObjects == false) {
+                // it returns all the objects
                 mObjects.add(createBBCHeadlines());
                 mObjects.add(createBBCHeadlines2());
 
                 return mObjects;
             } else {
+                // it returns only the objects with above headline
                 if (containsOneOfOurCurrentHeadlines(objects, "UK heatwave set to break records")) {
                     mObjects.add(createBBCHeadlines());
                 }
@@ -50,6 +56,10 @@ public class DummyRawDatabase implements RawDatabase<ApplicationConfiguration> {
         }
 
         throw new RuntimeException(String.format("The type %s is not supported", objectDataType.getDeveloperName()));
+    }
+
+    private boolean filteringByObjects(List<MObject> objects, ListFilter filter) {
+        return objects != null && objects.size() > 0 && filter != null && filter.isFilterByProvidedObjects();
     }
 
     private boolean containsOneOfOurCurrentHeadlines(List<MObject> objects, String headline) {
