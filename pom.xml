@@ -23,13 +23,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.manywho</groupId>
-            <artifactId>java-sdk:sdk-server-servlet3</artifactId>
+            <groupId>com.github.manywho.sdk-java</groupId>
+            <artifactId>sdk-server-servlet3</artifactId>
             <version>${manywho.skd.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.manywho</groupId>
-            <artifactId>java-sdk:sdk-server-undertow</artifactId>
+            <groupId>com.github.manywho.sdk-java</groupId>
+            <artifactId>sdk-server-undertow</artifactId>
             <version>${manywho.skd.version}</version>
         </dependency>
 
