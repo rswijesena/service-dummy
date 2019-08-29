@@ -11,4 +11,10 @@ public class ApplicationConfiguration implements Configuration {
     public boolean getIncludeTypesWithBindings() {
         return includeTypesWithBindings;
     }
+
+    @Configuration.Setting(name = "Hostname", contentType = ContentType.String, required = false)
+    private String hostname;
+
+    @Configuration.Setting(name = "Port", contentType = ContentType.Number, required = false)
+    private int port;
 }
