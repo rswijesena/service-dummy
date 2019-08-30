@@ -107,6 +107,7 @@ public class DummyRawDatabase implements RawDatabase<ApplicationConfiguration> {
         Property pointLinkedArticle = new Property("points", "388");
 
         MObject linkedArticle = new MObject("linked-articles", "hn-1-1", Arrays.asList(titleLinkedArticle, pointLinkedArticle));
+        linkedArticle.setTypeElementBindingDeveloperName("hn-binding");
 
         // add linked article as property
         Property propertyLinkedArticlesHackerNews = new Property("linked-articles", Arrays.asList(linkedArticle));
@@ -121,6 +122,8 @@ public class DummyRawDatabase implements RawDatabase<ApplicationConfiguration> {
         // created linked article
         MObject linkedArticle = new MObject("linked-articles", "bbc-1-1",
                 Arrays.asList(new Property("headlines", "Hot weather: How to sleep in a heatwave")));
+
+        linkedArticle.setTypeElementBindingDeveloperName("bbc-binding");
 
         Property propertyLinkedArticlesBBC = new Property("linked-articles", Arrays.asList(linkedArticle));
 
