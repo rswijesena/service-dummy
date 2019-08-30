@@ -1,5 +1,6 @@
 package com.manywho.services.dummy.database;
 
+import com.manywho.sdk.api.ContentType;
 import com.manywho.sdk.api.draw.content.Command;
 import com.manywho.sdk.api.run.elements.type.ListFilter;
 import com.manywho.sdk.api.run.elements.type.MObject;
@@ -101,40 +102,66 @@ public class DummyRawDatabase implements RawDatabase<ApplicationConfiguration> {
     private MObject createHackerNewsHeadlines() {
         Property propertyTitleHackerNews = new Property("headlines", "How (not) to sign a JSON object");
         Property propertyPointsHackerNews = new Property("points", "3");
+        Property propertyAuthorHackerNews = new Property("author", createAuthorWithDefaultBinding("Jose"));
 
         // linked article
         Property titleLinkedArticle = new Property("headlines", "Catj: A new way to display JSON files");
         Property pointLinkedArticle = new Property("points", "388");
+        Property authorLinedArticle = new Property("author", createAuthorWithDefaultBinding("Juan"));
 
-        MObject linkedArticle = new MObject("linked-articles", "hn-1-1", Arrays.asList(titleLinkedArticle, pointLinkedArticle));
+        MObject linkedArticle = new MObject("linked-articles", "hn-1-1", Arrays.asList(titleLinkedArticle, pointLinkedArticle, authorLinedArticle));
         linkedArticle.setTypeElementBindingDeveloperName("hn-binding");
 
         // add linked article as property
         Property propertyLinkedArticlesHackerNews = new Property("linked-articles", Arrays.asList(linkedArticle));
 
         return new MObject("hn-binding", "hn-1",
-                Arrays.asList(propertyTitleHackerNews, propertyPointsHackerNews, propertyLinkedArticlesHackerNews));
+                Arrays.asList(propertyTitleHackerNews, propertyPointsHackerNews, propertyLinkedArticlesHackerNews, propertyAuthorHackerNews));
     }
 
     private MObject createBBCHeadlines() {
         Property propertyTitleBBC = new Property("headlines", "UK heatwave set to break records");
-
-        // created linked article
-        MObject linkedArticle = new MObject("linked-articles", "bbc-1-1",
-                Arrays.asList(new Property("headlines", "Hot weather: How to sleep in a heatwave")));
+        Property author = new Property("author", createAuthorWithDefaultBinding("Dante"));
+        MObject linkedArticle = new MObject("linked-articles", "bbc-1-1", Arrays.asList(
+                new Property("headlines", "Hot weather: How to sleep in a heatwave"),
+                new Property("author", createAuthorWithDefaultBinding("Rosario")))
+        );
 
         linkedArticle.setTypeElementBindingDeveloperName("bbc-binding");
-
         Property propertyLinkedArticlesBBC = new Property("linked-articles", Arrays.asList(linkedArticle));
 
-        return new MObject("bbc-binding", "bbc-1" , Arrays.asList(propertyTitleBBC, propertyLinkedArticlesBBC));
+
+        return new MObject("bbc-binding", "bbc-1" , Arrays.asList(propertyTitleBBC, author, propertyLinkedArticlesBBC));
     }
 
     private MObject createBBCHeadlines2() {
-        Property propertyTitleBBC = new Property("headlines", "Andy Murray will not play at Flushing Meadows");
-        Property propertkyLinkedArticlesBBC = new Property("linked-articles", new ArrayList());
+        Property propertyTitle = new Property("headlines", "Andy Murray will not play at Flushing Meadows");
+        Property propertkyLinkedArticles = new Property("linked-articles", new ArrayList());
+        Property propertyAuthorArticle = new Property("author", createAuthorFromSpreadsheet("John", 1));
 
-        return new MObject("bbc-binding", "bbc-2",  Arrays.asList(propertyTitleBBC, propertkyLinkedArticlesBBC));
+        return new MObject("bbc-binding", "bbc-2",  Arrays.asList(propertyTitle, propertkyLinkedArticles, propertyAuthorArticle));
+    }
+
+    private MObject createAuthorWithDefaultBinding(String name) {
+        MObject author = new MObject("User", "id-" + name.toLowerCase(),
+                Arrays.asList(new Property("name", name, ContentType.Object)));
+
+        author.setTypeElementBindingDeveloperName("user-binding");
+
+        return author;
+    }
+
+    private MObject createAuthorFromSpreadsheet(String name, Integer rowNumber) {
+        MObject author = new MObject("User", "id-" + name.toLowerCase(),
+                Arrays.asList(
+                        new Property("name", name, ContentType.String),
+                        new Property("row", rowNumber.toString())
+                )
+        );
+
+        author.setTypeElementBindingDeveloperName("user-spreadsheet-binding");
+
+        return author;
     }
 }
 
