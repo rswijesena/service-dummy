@@ -11,31 +11,26 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <manywho.skd.version>6430f84</manywho.skd.version>
     </properties>
 
     <repositories>
         <repository>
-            <id>snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>com.manywho.sdk</groupId>
+            <groupId>com.github.manywho.sdk-java</groupId>
             <artifactId>sdk-server-servlet3</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>${manywho.skd.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.manywho.sdk</groupId>
+            <groupId>com.github.manywho.sdk-java</groupId>
             <artifactId>sdk-server-undertow</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>${manywho.skd.version}</version>
         </dependency>
 
         <!-- Logging -->

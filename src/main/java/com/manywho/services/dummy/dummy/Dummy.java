@@ -14,6 +14,8 @@ public class Dummy implements Type {
     @Type.Property(name = "Age", contentType = ContentType.Number)
     private int age;
 
+    public Dummy() {}
+
     public Dummy(String id, String name, int age) {
         this.id = id;
         this.name = name;
