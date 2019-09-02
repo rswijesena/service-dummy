@@ -11,7 +11,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <manywho.skd.version>6430f84</manywho.skd.version>
+        <manywho.sdk.version>6430f84</manywho.sdk.version>
     </properties>
 
     <repositories>
@@ -25,12 +25,12 @@
         <dependency>
             <groupId>com.github.manywho.sdk-java</groupId>
             <artifactId>sdk-server-servlet3</artifactId>
-            <version>${manywho.skd.version}</version>
+            <version>${manywho.sdk.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.manywho.sdk-java</groupId>
             <artifactId>sdk-server-undertow</artifactId>
-            <version>${manywho.skd.version}</version>
+            <version>${manywho.sdk.version}</version>
         </dependency>
 
         <!-- Logging -->
