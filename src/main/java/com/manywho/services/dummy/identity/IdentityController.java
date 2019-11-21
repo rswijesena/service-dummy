@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class IdentityController extends AbstractIdentityController {
-    private final static Integer USERS_IN_DIRECTORY = 61;
+    private final static Integer USERS_IN_DIRECTORY = 101;
     private final static Integer GROUPS_IN_DIRECTORY = 53;
 
     private final Provider<AuthenticatedWho> authenticatedWhoProvider;
