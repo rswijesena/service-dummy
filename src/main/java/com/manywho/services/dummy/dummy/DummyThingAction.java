@@ -1,18 +1,30 @@
 package com.manywho.services.dummy.dummy;
 
-import javax.validation.constraints.NotNull;
-
 import com.manywho.sdk.api.ContentType;
 import com.manywho.sdk.services.actions.Action;
 import com.manywho.services.dummy.dummy.types.Thing;
 
-@Action.Metadata(name = "Thing", summary = "Dummy action that also does nothing but accepting a complex object Thing as input", uri = "dummy/thing")
+@Action.Metadata(name = "Dummy", summary = "Dummy action that does nothing", uri = "dummy/dummy")
 public class DummyThingAction implements Action {
-    @NotNull(message = "A Thing is required")
-    @Action.Input(name = "Thing", contentType = ContentType.Object)
-    private Thing thing;
+    public static class Input {
+        @Action.Input(name = "Thing", contentType = ContentType.Object)
+        private Thing thing;
 
-    public Thing getThing() {
-        return thing;
+        public Thing getName() {
+            return thing;
+        }
+    }
+
+    public static class Output {
+        @Action.Output(name = "Body", contentType = ContentType.String)
+        private String body;
+
+        public Output(String body) {
+            this.body = body;
+        }
+
+        public String getBody() {
+            return body;
+        }
     }
 }
