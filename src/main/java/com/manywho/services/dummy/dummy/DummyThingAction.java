@@ -3,15 +3,23 @@ package com.manywho.services.dummy.dummy;
 import com.manywho.sdk.api.ContentType;
 import com.manywho.sdk.services.actions.Action;
 import com.manywho.services.dummy.dummy.types.Thing;
+import com.manywho.sdk.services.types.system.$File;;
 
-@Action.Metadata(name = "Dummy", summary = "Dummy action that does nothing", uri = "dummy/dummy")
+@Action.Metadata(name = "DummyThing", summary = "Dummy action that does nothing. Accepts complex types as input", uri = "dummy/thing")
 public class DummyThingAction implements Action {
     public static class Input {
         @Action.Input(name = "Thing", contentType = ContentType.Object)
         private Thing thing;
 
+        @Action.Input(name = "File", contentType = ContentType.Object)
+        private $File file;
+
         public Thing getName() {
             return thing;
+        }
+
+        public $File getFile() {
+            return file;
         }
     }
 
