@@ -102,6 +102,10 @@ public class IdentityController extends AbstractIdentityController {
             userObject.setDirectoryName("Dummy Directory");
             userObject.setAuthenticationType(AuthorizationType.Oauth2);
             userObject.setLoginUrl("");
+            userObject.setPrimaryGroupId("7");
+            userObject.setPrimaryGroupName("S Club 7");
+            userObject.setRoleId("123");
+            userObject.setRoleName("Party Creators");
             userObject.setStatus("200");
             userObject.setUserId(UUID.randomUUID().toString());
         }
