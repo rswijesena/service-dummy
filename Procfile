@@ -1,1 +1,1 @@
-web: java -Dserver.port=${PORT:-8080} ${JAVA_OPTS} -jar target/dummy-1.0-SNAPSHOT-shaded.jar
+web: java -Dserver.port=${PORT:-8080} ${JAVA_OPTS} -jar target/dummy-1.0-SNAPSHOT.jar
