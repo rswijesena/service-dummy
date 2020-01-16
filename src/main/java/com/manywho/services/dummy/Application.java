@@ -13,7 +13,7 @@ public class Application extends Servlet3Server {
         this.setApplication(Application.class);
         this.start();
     }
-
+    //Adding comment to the Applicaiton.java
     public static void main(String[] args) throws Exception {
         EmbeddedServer server = new UndertowServer();
         server.addModule(new ApplicationModule());
